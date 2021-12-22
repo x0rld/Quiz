@@ -2,24 +2,24 @@ namespace Quiz;
 
 public class Questions
 {
-    public readonly string question;
-    public readonly string response;
+    public readonly string Question;
+    public readonly string Response;
 
     public Questions(string question, string response)
     {
-        this.question = question;
-        this.response = response;
+        this.Question = question;
+        this.Response = response;
     }
 
     public static bool AskQuestions(Questions qu)
     {
-        Console.WriteLine(qu.question);
+        Console.WriteLine(qu.Question);
         var resp = Console.ReadLine()?.Trim();
         if (resp == null)
         {
             throw new Exception("erreur d'entrée");
         }
-        if (resp == qu.response)
+        if (resp == qu.Response)
         {
             Console.WriteLine("Vrai");
             return true;
