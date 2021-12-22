@@ -1,4 +1,10 @@
-Quelle est la capitale de la France ?,Paris
-Quelle est la capitale de l'Espagne ?,Madrid
+Quelle est la capitale de la France ?,1,Paris,Marseille
+Quelle est la capitale de l'Espagne ?,2,Barcelone,Madrid
 Quelle est la capitale de l'Allemagne ?,Berlin
 Quelle est la capitale de l'Angleterre ?,Londres
+Quelle est la capitale de la Suède ?,Stockholm
+Quelle est la capitale de la République Techèque ?,Prague
+Quelle est la capitale de Monaco ?,Monaco
+Quelle est la capitale de la Belgique ?,Bruxelle
+Quelle est la capitale de l'Italie ?,Rome
+Quelle est la capitale de la Pologne ?,Varsovie
