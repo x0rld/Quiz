@@ -21,12 +21,17 @@ public class Questions
         }
         if (resp == qu.Response)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Vrai");
+            Console.ResetColor();
             return true;
         }
         else
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Faux");
+            Console.WriteLine(qu.Question + $"\n La réponse est {qu.Response}");
+            Console.ResetColor();
             return false;
         }
     }

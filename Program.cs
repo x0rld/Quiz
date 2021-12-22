@@ -23,9 +23,6 @@ namespace Quiz
             {
                 Console.WriteLine(e.Message);   
             }
-            
-        
-            
         }
 
         private static void StartQuiz(List<Questions> questionsList)
