@@ -1,3 +1,4 @@
+// ReSharper disable All
 namespace Quiz;
 
 public class Questions
@@ -42,10 +43,10 @@ public class Questions
        
     }
 
-    public static bool AskQCM(Questions qu)
+    public static bool AskQcm(Questions qu)
     {
         Console.WriteLine(qu._question);
-        foreach (var re in qu._multipleResponse)
+        foreach (var re in qu._multipleResponse!)
         {
             Console.WriteLine($"{re.Key}: {re.Value}");
         }

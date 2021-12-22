@@ -5,10 +5,25 @@ namespace Quiz
     {
         static void Main()
         {
+            Console.WriteLine("Taper le mot de passe administrateur");
+            var password = Console.ReadLine();
+            if (password == null)
+            {
+                Console.WriteLine("Erreur stdin fermé");
+                System.Environment.Exit(-1);
+            }
+            if (password == "admin")
+            {
+                AddQestion("../../../questions.txt");
+            }
             List<Questions> questionsList = new List<Questions>();
             try
             {
                 questionsList = LoadQuestions("../../../questions.txt");
+                if (questionsList.Count == 0)
+                {
+                    Console.WriteLine("le fichier est vide");
+                }
                 StartQuiz(questionsList);
             }
             catch (System.IO.FileNotFoundException)
@@ -36,7 +51,7 @@ namespace Quiz
                 }
                 else
                 {
-                    res += Questions.AskQCM(qu) ? 1 : 0 ;
+                    res += Questions.AskQcm(qu) ? 1 : 0 ;
                 }
             }
             Console.WriteLine($"vous avez eu {res} bonne réponses sur {questionsList.Count} !");
@@ -44,6 +59,11 @@ namespace Quiz
 
         private static List<Questions>  LoadQuestions(string path)
         {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("fichier non trouvé");
+            }
+            
             var questionsList = new List<Questions>();
             foreach (string line in File.ReadLines(path))
             {
@@ -71,6 +91,31 @@ namespace Quiz
                 }
             }
             return questionsList;
-        } 
+        }
+
+        private static void AddQestion(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("fichier non trouvé");
+            }
+            Console.WriteLine("Taper la questions à ajouter");
+            var question = Console.ReadLine();
+            if (question == null)
+            {
+                Console.WriteLine("Erreur stdin fermé");
+                System.Environment.Exit(-1);
+            }
+            File.AppendAllText(path,  question);
+            Console.WriteLine("Taper la réponse à cette question");
+            var response = Console.ReadLine();
+            if (response == null)
+            {
+                Console.WriteLine("Erreur stdin fermé");
+                System.Environment.Exit(-1);
+            }
+            File.AppendAllText(path,  $",{response}");
+            Console.WriteLine("Nouvelle question enregistrée");
+        }
     }
 }
