@@ -1,0 +1,4 @@
+Quelle est la capitale de la France ?,Paris
+Quelle est la capitale de l'Espagne ?,Madrid
+Quelle est la capitale de l'Allemagne ?,Berlin
+Quelle est la capitale de l'Angleterre ?,Londres
