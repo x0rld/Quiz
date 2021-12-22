@@ -2,26 +2,26 @@ namespace Quiz;
 
 public class Questions
 {
-    private readonly string Question;
+    private readonly string _question;
     public readonly string? Response;
-    private readonly Dictionary<int,string>? MultipleResponse;
-    private int goodResponse = -1;
+    private readonly Dictionary<int,string>? _multipleResponse;
+    private readonly int _goodResponse = -1;
 
     public Questions(string question, Dictionary<int,string> response,int good)
     {
-        this.Question = question;
-        this.MultipleResponse = response;
-        this.goodResponse = good;
+        this._question = question;
+        this._multipleResponse = response;
+        this._goodResponse = good;
     } 
     public Questions(string question, string response)
     {
-        this.Question = question;
+        this._question = question;
         this.Response = response;
     }
 
     public static bool AskQuestions(Questions qu)
     {
-        Console.WriteLine(qu.Question);
+        Console.WriteLine(qu._question);
         var resp = Console.ReadLine()?.Trim();
         if (resp == null)
         {
@@ -36,7 +36,7 @@ public class Questions
         }
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Faux");
-        Console.WriteLine(qu.Question + $"\n La réponse est {qu.Response}");
+        Console.WriteLine(qu._question + $"\n La réponse est {qu.Response}");
         Console.ResetColor();
         return false;
        
@@ -44,8 +44,8 @@ public class Questions
 
     public static bool AskQCM(Questions qu)
     {
-        Console.WriteLine(qu.Question);
-        foreach (var re in qu.MultipleResponse)
+        Console.WriteLine(qu._question);
+        foreach (var re in qu._multipleResponse)
         {
             Console.WriteLine($"{re.Key}: {re.Value}");
         }
@@ -56,7 +56,7 @@ public class Questions
             throw new Exception("erreur d'entrée");
         }
         var number = resp.ToCharArray()[0] - '0';
-        if (number == qu.goodResponse)
+        if (number == qu._goodResponse)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Vrai");
@@ -65,7 +65,7 @@ public class Questions
         }
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Faux");
-        Console.WriteLine(qu.Question + $"\n La réponse est {qu.MultipleResponse[qu.goodResponse]}");
+        Console.WriteLine(qu._question + $"\n La réponse est {qu._multipleResponse[qu._goodResponse]}");
         Console.ResetColor();
         return false;
     }
