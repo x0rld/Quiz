@@ -35,7 +35,6 @@ public class QuestionManager
             File.AppendAllText(_path,  $",{response}");
             Console.WriteLine("Nouvelle question enregistrée");
         }
-
         public async Task DeleteQuestion()
         {
             var startIndex = 0;
@@ -144,12 +143,12 @@ public class QuestionManager
             return questionsList;
         }
 
-        public static QuestionManager AdminLogin(string passwd,List<Questions>? quList,string path)
+        public static QuestionManager? AdminLogin(string passwd,List<Questions>? quList,string path)
         {
             if (Password != passwd)
             {
                 throw new ArgumentException("Mauvaise mot de passe!");
-            }
-           return new QuestionManager(quList, path);
+            } 
+            return new QuestionManager(quList, path);
         }
 }

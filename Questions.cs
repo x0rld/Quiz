@@ -38,7 +38,6 @@ namespace Quiz
                 Console.ResetColor();
                 return true;
             }
-
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Faux");
             Console.WriteLine(qu.Question + $"\n La réponse est {qu.Response}");
@@ -70,7 +69,6 @@ namespace Quiz
                 Console.ResetColor();
                 return true;
             }
-
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Faux");
             Console.WriteLine(qu.Question + $"\n La réponse est {qu.MultipleResponse[qu.GoodResponse]}");
