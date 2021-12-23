@@ -4,12 +4,11 @@ public class QuestionManager
 {
     private readonly string _path;
     private readonly List<Questions>? _quList;
-    private string _password = "admin";
+    private const string Password = "admin";
 
-    public QuestionManager(string password,string path, List<Questions>? questionsList)
+    private QuestionManager( List<Questions>? questionsList, string path)
     {
-        this._path = path;
-
+        _path = path;
         _quList = questionsList ?? throw new ArgumentException("file empty or missing argument");
     }
         public void AddQestion()
@@ -147,6 +146,10 @@ public class QuestionManager
 
         public static QuestionManager AdminLogin(string passwd,List<Questions>? quList,string path)
         {
-           return new QuestionManager(path, path, quList);
+            if (Password != passwd)
+            {
+                throw new ArgumentException("Mauvaise mot de passe!");
+            }
+           return new QuestionManager(quList, path);
         }
 }
