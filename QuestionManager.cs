@@ -2,22 +2,19 @@ namespace Quiz;
 
 public class QuestionManager
 {
-    private string path;
-    private List<Questions>? quList;
+    private readonly string _path;
+    private readonly List<Questions>? _quList;
+    private string _password = "admin";
 
-    public QuestionManager(string path, List<Questions>? questionsList)
+    public QuestionManager(string password,string path, List<Questions>? questionsList)
     {
-        this.path = path;
-        if (questionsList == null)
-        {
-            throw new ArgumentException();
-        }
+        this._path = path;
 
-        quList = questionsList;
+        _quList = questionsList ?? throw new ArgumentException("file empty or missing argument");
     }
         public void AddQestion()
         {
-            if (!File.Exists(path))
+            if (!File.Exists(_path))
             {
                 throw new FileNotFoundException("fichier non trouvé");
             }
@@ -26,24 +23,24 @@ public class QuestionManager
             if (question == null)
             {
                 Console.WriteLine("Erreur stdin fermé");
-                System.Environment.Exit(-1);
+                Environment.Exit(-1);
             }
-            File.AppendAllText(path,  question);
+            File.AppendAllText(_path,  question);
             Console.WriteLine("Taper la réponse à cette question");
             var response = Console.ReadLine();
             if (response == null)
             {
                 Console.WriteLine("Erreur stdin fermé");
-                System.Environment.Exit(-1);
+                Environment.Exit(-1);
             }
-            File.AppendAllText(path,  $",{response}");
+            File.AppendAllText(_path,  $",{response}");
             Console.WriteLine("Nouvelle question enregistrée");
         }
 
         public async Task DeleteQuestion()
         {
             var startIndex = 0;
-            foreach (var qu in quList!)
+            foreach (var qu in _quList!)
             {
                 Console.WriteLine("Question: " + startIndex);
                 startIndex++;
@@ -76,9 +73,9 @@ public class QuestionManager
             }
 
             var index = Int32.Parse(response);
-            quList.RemoveAt(index);
-            await using StreamWriter file = new StreamWriter(path);
-            foreach (var qu in quList)
+            _quList.RemoveAt(index);
+            await using StreamWriter file = new StreamWriter(_path);
+            foreach (var qu in _quList)
             {
                 if (qu.Response == null)
                 {
@@ -146,5 +143,10 @@ public class QuestionManager
                 return null;
             }
             return questionsList;
+        }
+
+        public static QuestionManager AdminLogin(string passwd,List<Questions>? quList,string path)
+        {
+           return new QuestionManager(path, path, quList);
         }
 }
