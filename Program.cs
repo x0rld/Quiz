@@ -9,7 +9,6 @@ namespace Quiz
             List<Questions>? questionsList = null;
             try
             {
-                ConsoleColor color;
                 questionsList = QuestionManager.LoadQuestions(questionsFile);
                 if (questionsList == null) throw new ArgumentNullException("Le fichier est vide");
             }
@@ -25,7 +24,29 @@ namespace Quiz
             {
                 Console.WriteLine(e.Message);   
             }
-            
+
+            await menu(questionsList,questionsFile);
+        }
+
+        private static void StartQuiz(List<Questions>? questionsList)
+        {
+            var res = 0;
+            foreach (var qu in questionsList)
+            {
+                if (qu.Response != null)
+                {
+                    res += Questions.AskQuestions(qu) ? 1 : 0 ;                 
+                }
+                else
+                {
+                    res += Questions.AskQcm(qu) ? 1 : 0 ;
+                }
+            }
+            Console.WriteLine($"vous avez eu {res} bonne réponses sur {questionsList.Count} !");
+        }
+
+        private static async Task menu(List<Questions>? questionsList,string questionsFile)
+        {
             Console.WriteLine("1: Administration\n" +
                               "2: Lancer le quiz\n" +
                               "3: Quitter le programme\n" +
@@ -36,7 +57,7 @@ namespace Quiz
                     Console.WriteLine("Erreur stdin fermé");
                     Environment.Exit(-1);
                     break;
-                    
+
                 case "1":
                     Console.WriteLine("Taper le mot de passe administrateur");
                     var password = Console.ReadLine();
@@ -49,7 +70,7 @@ namespace Quiz
                     QuestionManager? questionManager = null;
                     try
                     {
-                       questionManager = QuestionManager.AdminLogin(password, questionsList, questionsFile);
+                        questionManager = QuestionManager.AdminLogin(password, questionsList, questionsFile);
 
                     }
                     catch (ArgumentException e)
@@ -57,6 +78,7 @@ namespace Quiz
                         Console.WriteLine(e.Message);
                         Environment.Exit(-2);
                     }
+
                     Console.WriteLine("1: Ajouter une question\n" +
                                       "2: Supprimer une question\n" +
                                       "3: Retour en arrière");
@@ -76,11 +98,11 @@ namespace Quiz
                             await questionManager?.DeleteQuestion()!;
                             break;
                         case "3":
+                            await menu(questionsList,questionsFile);
                             break;
                     }
-                    
                     break;
-                
+
                 case "2":
                     StartQuiz(questionsList);
                     break;
@@ -88,23 +110,6 @@ namespace Quiz
                     Environment.Exit(0);
                     break;
             }
-        }
-
-        private static void StartQuiz(List<Questions>? questionsList)
-        {
-            var res = 0;
-            foreach (var qu in questionsList)
-            {
-                if (qu.Response != null)
-                {
-                    res += Questions.AskQuestions(qu) ? 1 : 0 ;                 
-                }
-                else
-                {
-                    res += Questions.AskQcm(qu) ? 1 : 0 ;
-                }
-            }
-            Console.WriteLine($"vous avez eu {res} bonne réponses sur {questionsList.Count} !");
         }
     }
 }
