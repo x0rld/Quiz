@@ -3,9 +3,9 @@ namespace Quiz;
 public class QuestionManager
 {
     private string path;
-    private List<Questions> quList;
+    private List<Questions>? quList;
 
-    public QuestionManager(string path, List<Questions> questionsList)
+    public QuestionManager(string path, List<Questions>? questionsList)
     {
         this.path = path;
         quList = questionsList;
@@ -36,7 +36,7 @@ public class QuestionManager
             Console.WriteLine("Nouvelle question enregistrée");
         }
 
-        public async Task DeleteQuestion(string path, List<Questions> questionsList)
+        public async Task DeleteQuestion(string path, List<Questions>? questionsList)
         {
             var startIndex = 0;
             foreach (var qu in questionsList)
