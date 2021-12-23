@@ -8,17 +8,21 @@ public class QuestionManager
     public QuestionManager(string path, List<Questions>? questionsList)
     {
         this.path = path;
-        quList = questionsList;
+        if (questionsList == null)
+        {
+            throw new ArgumentException();
+        }
 
+        quList = questionsList;
     }
-        private  void AddQestion()
+        public void AddQestion()
         {
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("fichier non trouvé");
             }
             Console.WriteLine("Taper la questions à ajouter");
-            var question = Console.ReadLine();
+            var question = Console.ReadLine()?.Trim();
             if (question == null)
             {
                 Console.WriteLine("Erreur stdin fermé");
@@ -36,10 +40,10 @@ public class QuestionManager
             Console.WriteLine("Nouvelle question enregistrée");
         }
 
-        public async Task DeleteQuestion(string path, List<Questions>? questionsList)
+        public async Task DeleteQuestion()
         {
             var startIndex = 0;
-            foreach (var qu in questionsList)
+            foreach (var qu in quList!)
             {
                 Console.WriteLine("Question: " + startIndex);
                 startIndex++;
@@ -62,7 +66,7 @@ public class QuestionManager
             if (response == null)
             {
                 Console.WriteLine("Erreur stdin fermé");
-                System.Environment.Exit(-1);
+                Environment.Exit(-1);
             }
 
             var r = response.ToCharArray()[0];
@@ -72,9 +76,9 @@ public class QuestionManager
             }
 
             var index = Int32.Parse(response);
-            questionsList.RemoveAt(index);
-            using StreamWriter file = new StreamWriter(path);
-            foreach (var qu in questionsList)
+            quList.RemoveAt(index);
+            await using StreamWriter file = new StreamWriter(path);
+            foreach (var qu in quList)
             {
                 if (qu.Response == null)
                 {
@@ -102,5 +106,45 @@ public class QuestionManager
                 }
             }
             Console.WriteLine("Question supprimée");
+        }
+        public static List<Questions>?  LoadQuestions(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("fichier non trouvé");
+            }
+            
+            var questionsList = new List<Questions>();
+            foreach (string line in File.ReadLines(path))
+            {
+                var data = line.Split(',');
+                if (data.Length <2)
+                {
+                    throw new Exception("Le fichier doit avoir les lignes sous forme questions,réponse " +
+                                        "ou questions,numero_réponse,réponses,réponses ");
+                }
+
+                if (data.Length == 2)
+                {
+                    questionsList.Add(new Questions(data[0],data[1]));   
+                }
+                else
+                {
+                    var number = data[1].ToCharArray()[0] - '0';
+                    var dict = new Dictionary<int, string>();
+                    for (int i = 2; i < data.Length; i++)
+                    {
+                        dict.Add(i -1,data[i]);   
+                    }
+                    
+                    questionsList.Add(new Questions(data[0],dict,number));   
+                }
+            }
+
+            if (questionsList.Count == 0)
+            {
+                return null;
+            }
+            return questionsList;
         }
 }
